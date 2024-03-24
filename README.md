@@ -1,6 +1,6 @@
-# go-xsuaa
+# go-xssec
 
-go-xsuaa is a (more or less maintained) fork of 
+go-xssec is a (more or less maintained) fork of 
 [cloud-security-client-golang-xsuaa](https://github.com/SAP-archive/cloud-security-client-golang-xsuaa).
 It allows you to easily integrate XSUAA security services into your Go applications.
 
@@ -9,7 +9,7 @@ It allows you to easily integrate XSUAA security services into your Go applicati
 To use this library in your project, install it using `go get`:
 
 ```bash
-go get -u github.com/darmiel/go-xsuaa
+go get -u github.com/darmiel/go-xssec
 ```
 
 ## Basic Usage
@@ -20,7 +20,7 @@ Below is a basic example of how to use the library to create a security context 
 package main
 
 import (
-	"github.com/darmiel/go-xsuaa"
+	"github.com/darmiel/go-xssec"
 )
 
 func main() {

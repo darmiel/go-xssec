@@ -1,4 +1,4 @@
-module github.com/darmiel/go-xsuaa
+module github.com/darmiel/go-xssec
 
 go 1.22.1
 
