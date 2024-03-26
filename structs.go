@@ -1,17 +1,41 @@
 package xssec
 
 import (
+	"encoding/json"
 	"errors"
+	"github.com/darmiel/go-xsenv"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 // Config defines the configuration required for XSUAA service integration.
 // It includes the client ID, XS application name, service URL, and UAA domain.
 type Config struct {
-	ClientID  string // ClientID represents the OAuth client identifier.
-	XSAppName string // XSAppName represents the XS application name for service bindings.
-	URL       string // URL is the endpoint of the XSUAA service.
-	UAADomain string // UAADomain is the domain of the UAA service.
+	ClientID  string `json:"clientid,omitempty"`  // ClientID represents the OAuth client identifier.
+	XSAppName string `json:"xsappname,omitempty"` // XSAppName represents the XS application name for service bindings.
+	URL       string `json:"url,omitempty"`       // URL is the endpoint of the XSUAA service.
+	UAADomain string `json:"uaadomain,omitempty"` // UAADomain is the domain of the UAA service.
+}
+
+// UnmarshalService unmarshals a service configuration from a JSON message.
+// This can be used in combination with xsenv.LoadService to load service configurations.
+func (c *Config) UnmarshalService(msg *json.RawMessage) error {
+	parsed := struct {
+		Credentials Config `json:"credentials"`
+	}{}
+	if err := json.Unmarshal(*msg, &parsed); err != nil {
+		return err
+	}
+	// make sure all required fields are present
+	if err := xsenv.CheckAllFields(xsenv.Fields{
+		"clientid":  parsed.Credentials.ClientID != "",
+		"xsappname": parsed.Credentials.XSAppName != "",
+		"url":       parsed.Credentials.URL != "",
+		"uaadomain": parsed.Credentials.UAADomain != "",
+	}); err != nil {
+		return err
+	}
+	*c = parsed.Credentials
+	return nil
 }
 
 var (
